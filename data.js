@@ -4,8 +4,9 @@
   const STORAGE_KEY = "athar-menu-data-v1";
   const AUTH_KEY = "athar-admin-auth";
   const API_URL = "/api/menu";
+  const UPLOAD_URL = "/api/upload";
   // Must match the ADMIN_API_TOKEN environment variable set on the Vercel project.
-  const ADMIN_API_TOKEN = "REPLACE_WITH_YOUR_ADMIN_TOKEN";
+  const ADMIN_API_TOKEN = "aa02d0f4c15c79b2c8c87d1f6892282e7bf429b90dd87dd2";
 
   const IMG = {
     hotCoffee: "https://images.pexels.com/photos/18281420/pexels-photo-18281420.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -203,6 +204,27 @@
     sessionStorage.removeItem(AUTH_KEY);
   }
 
+  // Uploads a resized image (as a base64 data URL) to Vercel Blob storage via
+  // /api/upload and resolves with the public URL. Rejects on any failure so
+  // the caller can fall back or show an error toast.
+  function uploadImage(dataUrl, filename) {
+    return fetch(UPLOAD_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-token": ADMIN_API_TOKEN },
+      body: JSON.stringify({ dataUrl: dataUrl, filename: filename || "image" })
+    }).then(function (response) {
+      if (!response.ok) {
+        return response.json().catch(function () { return {}; }).then(function (payload) {
+          throw new Error((payload && payload.error) || ("Upload failed with status " + response.status));
+        });
+      }
+      return response.json();
+    }).then(function (payload) {
+      if (!payload || !payload.url) throw new Error("Upload response missing url");
+      return payload.url;
+    });
+  }
+
   window.ZadData = {
     STORAGE_KEY: STORAGE_KEY,
     load: load,
@@ -213,6 +235,7 @@
     isAuthenticated: isAuthenticated,
     login: login,
     logout: logout,
+    uploadImage: uploadImage,
     demo: clone(demo)
   };
 })();
