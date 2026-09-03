@@ -633,15 +633,28 @@
         renderSections();
       }
     }
-    if (target.id === "add-variant") {
-      itemVariants.push({ label: "", price: "", image: "" });
-      renderVariantRows();
-    }
-    if (target.dataset.removeVariant !== undefined) {
-      itemVariants.splice(Number(target.dataset.removeVariant), 1);
-      renderVariantRows();
-    }
   });
+
+  // ITEM MODAL CLICK HANDLER
+  // The item modal (#item-modal) lives outside #admin-content in the DOM,
+  // so clicks on "Add variant" / "Remove variant" never reached the
+  // #admin-content listener above. Handling them here on the modal itself
+  // fixes that.
+  var itemModal = document.getElementById("item-modal");
+  if (itemModal) {
+    itemModal.addEventListener("click", function (event) {
+      var target = event.target.closest("button");
+      if (!target) return;
+      if (target.id === "add-variant") {
+        itemVariants.push({ label: "", price: "", image: "" });
+        renderVariantRows();
+      }
+      if (target.dataset.removeVariant !== undefined) {
+        itemVariants.splice(Number(target.dataset.removeVariant), 1);
+        renderVariantRows();
+      }
+    });
+  }
 
   // MODAL BUTTONS
   var saveItemBtn = document.getElementById("save-item");
