@@ -5,6 +5,7 @@
   var CURRENCY_AR = "ج.م";
   var PAGE_SIZE = 8;
   var currentLang = localStorage.getItem("athar-lang") || "en";
+  var promoData = null;
 
   // Language translations for static UI text
   var translations = {
@@ -23,6 +24,7 @@
   function buildMenuData() {
     if (!window.ZadData) return [];
     var raw = window.ZadData.load();
+    promoData = raw.promo || null;
     var sections = raw.sections
       .filter(function (section) { return section.active; })
       .sort(function (a, b) { return a.order - b.order; });
@@ -67,6 +69,7 @@
     }
     state.visible = PAGE_SIZE;
     renderAll();
+    renderPromo();
   }
 
   function escapeHtml(str) {
@@ -194,6 +197,46 @@
     });
   }
 
+  function renderPromo() {
+    var section = document.getElementById("new-drink");
+    if (!section) return;
+    var promo = promoData;
+
+    if (!promo || promo.active === false) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+
+    document.getElementById("promoDrinkName").textContent = currentLang === "ar" ? (promo.nameAr || promo.name) : promo.name;
+    document.getElementById("promoDesc").textContent = currentLang === "ar" ? (promo.descriptionAr || promo.description) : promo.description;
+    document.getElementById("promoTagTitle").textContent = currentLang === "ar" ? (promo.tagTitleAr || promo.tagTitle) : promo.tagTitle;
+    document.getElementById("promoTagSub").textContent = currentLang === "ar" ? (promo.tagSubAr || promo.tagSub) : promo.tagSub;
+    document.getElementById("promoPrice").textContent = promo.price;
+
+    var oldPriceRow = document.getElementById("promoOldPriceRow");
+    if (promo.oldPrice) {
+      document.getElementById("promoOldPrice").textContent = promo.oldPrice;
+      oldPriceRow.hidden = false;
+    } else {
+      oldPriceRow.hidden = true;
+    }
+
+    var discountBlock = document.getElementById("promoDiscountBlock");
+    if (promo.discount) {
+      document.getElementById("promoDiscount").textContent = promo.discount;
+      discountBlock.hidden = false;
+    } else {
+      discountBlock.hidden = true;
+    }
+
+    var image = document.getElementById("promoImage");
+    if (promo.image) {
+      image.src = promo.image;
+      image.alt = currentLang === "ar" ? (promo.nameAr || promo.name) : promo.name;
+    }
+  }
+
   function initMobileMenu() {
     var toggle = document.getElementById("menuToggle");
     var nav = document.getElementById("mobileNav");
@@ -283,6 +326,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initLangToggle();
     renderAll();
+    renderPromo();
     initGallery();
     initMobileMenu();
     initMore();
