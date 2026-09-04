@@ -104,23 +104,23 @@
         </h2>
         <h2 class="promo-title promo-title-dark" data-en="drink" data-ar="مشروب">drink</h2>
 
-        <h3 class="promo-drink-name" data-en="Mango Coconut Smoothie" data-ar="سموذي مانجو وجوز الهند">Mango Coconut Smoothie</h3>
-        <p class="promo-desc" data-en="A tropical blend of ripe mango, cold-pressed coconut milk and ice. Light, creamy and refreshingly sweet — the perfect pick-me-up on a hot day without any coffee at all." data-ar="مزيج استوائي من المانجو الناضج وحليب جوز الهند المضغوط والثلج. خفيف وكريمي وحلو منعش — المشروب المثالي في يوم حار بدون قهوة.">
+        <h3 class="promo-drink-name" id="promoDrinkName">Mango Coconut Smoothie</h3>
+        <p class="promo-desc" id="promoDesc">
           A tropical blend of ripe mango, cold-pressed coconut milk and ice. Light, creamy and
           refreshingly sweet — the perfect pick-me-up on a hot day without any coffee at all.
         </p>
 
         <div class="promo-stats">
           <div>
-            <p class="promo-price">100 <span data-en="EGP" data-ar="ج.م">EGP</span></p>
-            <p class="promo-old-price">125 <span data-en="EGP" data-ar="ج.م">EGP</span></p>
+            <p class="promo-price"><span id="promoPrice">100</span> <span data-en="EGP" data-ar="ج.م">EGP</span></p>
+            <p class="promo-old-price" id="promoOldPriceRow"><span id="promoOldPrice">125</span> <span data-en="EGP" data-ar="ج.م">EGP</span></p>
           </div>
           <div>
-            <p class="promo-stat-title" data-en="Fresh" data-ar="طازج">Fresh</p>
-            <p class="promo-stat-sub" data-en="mango + coconut + ice" data-ar="مانجو + جوز هند + ثلج">mango + coconut + ice</p>
+            <p class="promo-stat-title" id="promoTagTitle">Fresh</p>
+            <p class="promo-stat-sub" id="promoTagSub">mango + coconut + ice</p>
           </div>
-          <div>
-            <p class="promo-stat-title">20%</p>
+          <div id="promoDiscountBlock">
+            <p class="promo-stat-title"><span id="promoDiscount">20</span>%</p>
             <p class="promo-stat-sub" data-en="Sale" data-ar="خصم">Sale</p>
           </div>
         </div>
@@ -130,6 +130,7 @@
 
       <div class="promo-image-wrap">
         <img
+          id="promoImage"
           src="https://images.pexels.com/photos/4294726/pexels-photo-4294726.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800"
           alt="Mango Coconut Smoothie"
           class="promo-image"
