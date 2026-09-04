@@ -16,6 +16,7 @@
   var confirmCallback = null;
   var itemImage = "";
   var itemVariants = [];
+  var promoImage = "";
 
   var app = document.getElementById("admin-app");
   var loginScreen = document.getElementById("login-screen");
@@ -233,9 +234,38 @@
   }
 
   function renderSettings() {
+    var promo = data.promo || {};
+    promoImage = promo.image || "";
     content.innerHTML = '<div class="page-head"><div><h1>Settings</h1><p>Update the admin account or restore the sample content.</p></div></div>' +
       '<section class="settings-card"><header class="settings-head"><span class="stat-icon">⚿</span><div><h2>Account settings</h2><p>These credentials are stored in this browser only.</p></div></header>' +
       '<form class="settings-form" id="settings-form"><div class="field-grid"><div class="field"><label for="settings-name">Display name</label><input class="control" id="settings-name" value="' + escapeHtml(data.account.name) + '"></div><div class="field"><label for="settings-email">Email</label><input class="control" id="settings-email" type="email" value="' + escapeHtml(data.account.email) + '"></div></div><div class="field-grid"><div class="field"><label for="settings-password">New password</label><input class="control" id="settings-password" type="password" minlength="6" placeholder="Leave blank to keep current"></div><div class="field"><label for="settings-confirm">Confirm password</label><input class="control" id="settings-confirm" type="password" minlength="6"></div></div><button class="btn" type="submit">Save account</button></form></section>' +
+
+      '<section class="settings-card" style="margin-top:16px"><header class="settings-head"><span class="stat-icon">✦</span><div><h2>Promo banner</h2><p>The "New addition" banner shown on the homepage, between the menu and the footer.</p></div></header>' +
+      '<form class="settings-form" id="promo-form" style="padding:20px">' +
+        '<div class="toggle-row" style="padding-bottom:14px;border-bottom:1px solid var(--cream-line,#e7ddd0);margin-bottom:14px"><div><b>Show on homepage</b><small>Turn off to hide the banner without losing its content</small></div><button class="switch ' + (promo.active !== false ? "active" : "") + '" id="promo-active" type="button" aria-label="Toggle promo banner visibility"></button></div>' +
+        '<div style="display:grid;grid-template-columns:220px 1fr;gap:24px">' +
+          '<div>' +
+            '<div class="field"><label>Photo</label></div>' +
+            '<label class="upload-box" for="promo-image-file">' +
+              '<div class="upload-placeholder" id="promo-upload-placeholder"' + (promoImage ? " hidden" : "") + '><span style="font-size:28px">▧</span><b>Click to upload an image</b><small>JPG, PNG or WEBP</small></div>' +
+              '<img id="promo-image-preview" alt="Promo preview" ' + (promoImage ? 'src="' + escapeHtml(promoImage) + '"' : "hidden") + '>' +
+              '<input id="promo-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif">' +
+            '</label>' +
+            '<div class="image-actions"><button class="btn btn-secondary btn-small" id="remove-promo-image" type="button">Remove image</button></div>' +
+            '<div class="field" style="margin-top:12px"><label for="promo-image-url">Or paste an image URL</label><input class="control" id="promo-image-url" type="url" placeholder="https://…" dir="ltr" value="' + (/^https?:/i.test(promoImage) ? escapeHtml(promoImage) : "") + '"></div>' +
+          '</div>' +
+          '<div class="form-stack">' +
+            '<div class="field-grid"><div class="field"><label for="promo-name">Drink name</label><input class="control" id="promo-name" dir="ltr" value="' + escapeHtml(promo.name || "") + '"></div><div class="field"><label for="promo-name-ar">Drink name (Arabic)</label><input class="control" id="promo-name-ar" dir="rtl" value="' + escapeHtml(promo.nameAr || "") + '"></div></div>' +
+            '<div class="field-grid"><div class="field"><label for="promo-desc">Description</label><textarea class="control" id="promo-desc" dir="ltr">' + escapeHtml(promo.description || "") + '</textarea></div><div class="field"><label for="promo-desc-ar">Description (Arabic)</label><textarea class="control" id="promo-desc-ar" dir="rtl">' + escapeHtml(promo.descriptionAr || "") + '</textarea></div></div>' +
+            '<div class="field-grid"><div class="field"><label for="promo-price">Price (EGP)</label><input class="control" id="promo-price" type="number" min="0" step="0.01" value="' + (promo.price != null ? promo.price : "") + '"></div><div class="field"><label for="promo-old-price">Old price (optional)</label><input class="control" id="promo-old-price" type="number" min="0" step="0.01" value="' + (promo.oldPrice != null ? promo.oldPrice : "") + '"></div></div>' +
+            '<div class="field"><label for="promo-discount">Discount % badge (optional)</label><input class="control" id="promo-discount" type="number" min="0" max="100" step="1" style="max-width:140px" value="' + (promo.discount != null ? promo.discount : "") + '"></div>' +
+            '<div class="field-grid"><div class="field"><label for="promo-tag-title">Highlight title</label><input class="control" id="promo-tag-title" dir="ltr" placeholder="Fresh" value="' + escapeHtml(promo.tagTitle || "") + '"></div><div class="field"><label for="promo-tag-title-ar">Highlight title (Arabic)</label><input class="control" id="promo-tag-title-ar" dir="rtl" placeholder="طازج" value="' + escapeHtml(promo.tagTitleAr || "") + '"></div></div>' +
+            '<div class="field-grid"><div class="field"><label for="promo-tag-sub">Highlight subtext</label><input class="control" id="promo-tag-sub" dir="ltr" placeholder="mango + coconut + ice" value="' + escapeHtml(promo.tagSub || "") + '"></div><div class="field"><label for="promo-tag-sub-ar">Highlight subtext (Arabic)</label><input class="control" id="promo-tag-sub-ar" dir="rtl" placeholder="مانجو + جوز هند + ثلج" value="' + escapeHtml(promo.tagSubAr || "") + '"></div></div>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn" type="submit" style="margin-top:16px">Save promo banner</button>' +
+      '</form></section>' +
+
       '<section class="settings-card" style="margin-top:16px"><header class="settings-head"><span class="stat-icon" style="background:var(--red-bg)">↻</span><div><h2>Reset demo content</h2><p>Restore all sample categories, items and login credentials.</p></div></header><div style="padding:20px"><button class="btn btn-danger" type="button" data-action="reset-demo">Reset everything</button></div></section>';
 
     document.getElementById("settings-form").addEventListener("submit", function (event) {
@@ -252,6 +282,87 @@
       if (password) data.account.password = password;
       persist("Account settings saved");
       updateAccountUI();
+      renderSettings();
+    });
+
+    function updatePromoImagePreview() {
+      var preview = document.getElementById("promo-image-preview");
+      var placeholder = document.getElementById("promo-upload-placeholder");
+      if (promoImage) {
+        preview.src = promoImage;
+        preview.hidden = false;
+        placeholder.hidden = true;
+      } else {
+        preview.removeAttribute("src");
+        preview.hidden = true;
+        placeholder.hidden = false;
+      }
+    }
+
+    document.getElementById("promo-active").addEventListener("click", function () { this.classList.toggle("active"); });
+
+    document.getElementById("promo-image-file").addEventListener("change", function () {
+      var file = this.files && this.files[0];
+      var input = this;
+      if (!file) return;
+      var fileName = file.name;
+      resizeImage(file, function (result) {
+        toast("Uploading image…");
+        input.disabled = true;
+        store.uploadImage(result, fileName)
+          .then(function (url) {
+            promoImage = url;
+            document.getElementById("promo-image-url").value = "";
+            updatePromoImagePreview();
+            toast("Image uploaded");
+          })
+          .catch(function (error) {
+            console.error("Promo image upload failed", error);
+            toast("Image upload failed. Using local preview instead.", "error");
+            promoImage = result;
+            document.getElementById("promo-image-url").value = "";
+            updatePromoImagePreview();
+          })
+          .then(function () { input.disabled = false; });
+      });
+      this.value = "";
+    });
+
+    document.getElementById("promo-image-url").addEventListener("input", function () {
+      if (this.value.trim()) {
+        promoImage = this.value.trim();
+        updatePromoImagePreview();
+      }
+    });
+
+    document.getElementById("remove-promo-image").addEventListener("click", function () {
+      promoImage = "";
+      document.getElementById("promo-image-url").value = "";
+      updatePromoImagePreview();
+    });
+
+    document.getElementById("promo-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var imageUrl = document.getElementById("promo-image-url").value.trim();
+      if (imageUrl) promoImage = imageUrl;
+      var oldPriceRaw = document.getElementById("promo-old-price").value.trim();
+      var discountRaw = document.getElementById("promo-discount").value.trim();
+      data.promo = {
+        active: document.getElementById("promo-active").classList.contains("active"),
+        name: document.getElementById("promo-name").value.trim(),
+        nameAr: document.getElementById("promo-name-ar").value.trim(),
+        description: document.getElementById("promo-desc").value.trim(),
+        descriptionAr: document.getElementById("promo-desc-ar").value.trim(),
+        price: Number(document.getElementById("promo-price").value) || 0,
+        oldPrice: oldPriceRaw ? Number(oldPriceRaw) : null,
+        discount: discountRaw ? Number(discountRaw) : null,
+        tagTitle: document.getElementById("promo-tag-title").value.trim(),
+        tagTitleAr: document.getElementById("promo-tag-title-ar").value.trim(),
+        tagSub: document.getElementById("promo-tag-sub").value.trim(),
+        tagSubAr: document.getElementById("promo-tag-sub-ar").value.trim(),
+        image: promoImage
+      };
+      persist("Promo banner saved");
       renderSettings();
     });
   }
@@ -277,7 +388,10 @@
     container.innerHTML = itemVariants.map(function (variant, index) {
       var image = variant.image || "";
       return '<div class="variant-edit-row" data-index="' + index + '">' +
-        '<input class="control" data-field="label" placeholder="Label (Hot)" value="' + escapeHtml(variant.label || "") + '">' +
+        '<div class="variant-label">' +
+          '<input class="control" data-field="label" placeholder="Label (Hot)" value="' + escapeHtml(variant.label || "") + '" dir="ltr">' +
+          '<input class="control" data-field="labelAr" placeholder="Label (Arabic) — اختياري" value="' + escapeHtml(variant.labelAr || "") + '" dir="rtl">' +
+        '</div>' +
         '<input class="control" data-field="price" type="number" min="0" step="0.01" placeholder="Price" value="' + (variant.price != null ? variant.price : "") + '">' +
         '<div class="variant-photo">' +
           '<div class="variant-photo-row">' +
@@ -347,13 +461,15 @@
     document.getElementById("item-id").value = item ? item.id : "";
     fillSectionSelect(item ? item.sectionId : data.sections.slice().sort(function (a, b) { return a.order - b.order; })[0].id);
     document.getElementById("item-name").value = item ? item.name : "";
+    document.getElementById("item-name-ar").value = item ? (item.nameAr || "") : "";
     document.getElementById("item-description").value = item ? item.description : "";
+    document.getElementById("item-description-ar").value = item ? (item.descriptionAr || "") : "";
     itemImage = item ? item.image : "";
     document.getElementById("item-image-url").value = item && /^https?:/i.test(item.image || "") ? item.image : "";
     updateImagePreview();
     itemVariants = item && item.variants && item.variants.length
-      ? item.variants.map(function (row) { return { label: row.label, price: row.price, image: row.image || "" }; })
-      : [{ label: "Regular", price: "", image: "" }];
+      ? item.variants.map(function (row) { return { label: row.label, labelAr: row.labelAr || "", price: row.price, image: row.image || "" }; })
+      : [{ label: "Regular", labelAr: "", price: "", image: "" }];
     renderVariantRows();
     setSwitch("item-available", item ? item.available : true);
     setSwitch("item-featured", item ? item.featured : false);
@@ -382,6 +498,7 @@
       .map(function (row) {
         return {
           label: String(row.label || "").trim(),
+          labelAr: String(row.labelAr || "").trim(),
           price: Number(row.price) || 0,
           image: String(row.image || "").trim()
         };
@@ -389,6 +506,7 @@
       .filter(function (row) { return row.label; })
       .map(function (row) {
         var out = { label: row.label, price: row.price };
+        if (row.labelAr) out.labelAr = row.labelAr;
         if (row.image) out.image = row.image;
         return out;
       });
@@ -401,7 +519,9 @@
     var values = {
       sectionId: Number(document.getElementById("item-section").value),
       name: document.getElementById("item-name").value.trim(),
+      nameAr: document.getElementById("item-name-ar").value.trim(),
       description: document.getElementById("item-description").value.trim(),
+      descriptionAr: document.getElementById("item-description-ar").value.trim(),
       image: itemImage,
       variants: cleanVariants,
       available: document.getElementById("item-available").classList.contains("active"),
@@ -427,7 +547,9 @@
     document.getElementById("section-id").value = section ? section.id : "";
     document.getElementById("section-emoji").value = section ? (section.emoji || "☕") : "☕";
     document.getElementById("section-name").value = section ? section.name : "";
+    document.getElementById("section-name-ar").value = section ? (section.nameAr || "") : "";
     document.getElementById("section-description").value = section ? section.description : "";
+    document.getElementById("section-description-ar").value = section ? (section.descriptionAr || "") : "";
     setSwitch("section-active", section ? section.active : true);
     openModal("section-modal");
   }
@@ -439,7 +561,9 @@
     var values = {
       emoji: document.getElementById("section-emoji").value.trim() || "☕",
       name: document.getElementById("section-name").value.trim(),
+      nameAr: document.getElementById("section-name-ar").value.trim(),
       description: document.getElementById("section-description").value.trim(),
+      descriptionAr: document.getElementById("section-description-ar").value.trim(),
       active: document.getElementById("section-active").classList.contains("active")
     };
     if (id) {
@@ -646,7 +770,7 @@
       var target = event.target.closest("button");
       if (!target) return;
       if (target.id === "add-variant") {
-        itemVariants.push({ label: "", price: "", image: "" });
+        itemVariants.push({ label: "", labelAr: "", price: "", image: "" });
         renderVariantRows();
       }
       if (target.dataset.removeVariant !== undefined) {
