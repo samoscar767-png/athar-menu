@@ -12,10 +12,11 @@
   <style>
     /* Variant editor — scoped styles so this works even before styles.css is updated */
     .variants-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-    .variant-edit-row { display: grid; grid-template-columns: 1fr 1fr 1.6fr auto; gap: 8px; align-items: start; }
+    .variant-edit-row { display: grid; grid-template-columns: 1.3fr 0.7fr 1.6fr auto; gap: 8px; align-items: start; }
     .variant-edit-row input { min-width: 0; }
     .variant-edit-row > input { margin-top: 2px; }
     .variants-empty { font-size: 12px; color: var(--muted, #8a7a6b); padding: 8px 0; }
+    .variant-label { display: flex; flex-direction: column; gap: 4px; min-width: 0; margin-top: 2px; }
     .variant-photo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
     .variant-photo-row { display: flex; align-items: center; gap: 6px; }
     .variant-photo-thumb-wrap { position: relative; flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; overflow: hidden; border: 1px solid var(--cream-line, #e7ddd0); background: var(--tab-bg, #f8f2e9); display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -127,13 +128,25 @@
               <label for="item-section">Category <span>*</span></label>
               <select class="control" id="item-section" required></select>
             </div>
-            <div class="field">
-              <label for="item-name">Name <span>*</span></label>
-              <input class="control" id="item-name" required placeholder="Flat White" dir="ltr">
+            <div class="field-grid">
+              <div class="field">
+                <label for="item-name">Name <span>*</span></label>
+                <input class="control" id="item-name" required placeholder="Flat White" dir="ltr">
+              </div>
+              <div class="field">
+                <label for="item-name-ar">Name (Arabic)</label>
+                <input class="control" id="item-name-ar" placeholder="فلات وايت" dir="rtl">
+              </div>
             </div>
-            <div class="field">
-              <label for="item-description">Description</label>
-              <textarea class="control" id="item-description" dir="ltr"></textarea>
+            <div class="field-grid">
+              <div class="field">
+                <label for="item-description">Description</label>
+                <textarea class="control" id="item-description" dir="ltr"></textarea>
+              </div>
+              <div class="field">
+                <label for="item-description-ar">Description (Arabic)</label>
+                <textarea class="control" id="item-description-ar" dir="rtl"></textarea>
+              </div>
             </div>
 
             <div class="field">
@@ -182,13 +195,25 @@
               <button class="switch active" id="section-active" type="button" aria-label="Toggle section visibility"></button>
             </div>
           </div>
-          <div class="field">
-            <label for="section-name">Name <span>*</span></label>
-            <input class="control" id="section-name" required dir="ltr" placeholder="Specialty Lattes">
+          <div class="field-grid">
+            <div class="field">
+              <label for="section-name">Name <span>*</span></label>
+              <input class="control" id="section-name" required dir="ltr" placeholder="Specialty Lattes">
+            </div>
+            <div class="field">
+              <label for="section-name-ar">Name (Arabic)</label>
+              <input class="control" id="section-name-ar" dir="rtl" placeholder="لاتيه مميز">
+            </div>
           </div>
-          <div class="field">
-            <label for="section-description">Tagline</label>
-            <input class="control" id="section-description" dir="ltr" placeholder="hot, iced, blended or canned">
+          <div class="field-grid">
+            <div class="field">
+              <label for="section-description">Tagline</label>
+              <input class="control" id="section-description" dir="ltr" placeholder="hot, iced, blended or canned">
+            </div>
+            <div class="field">
+              <label for="section-description-ar">Tagline (Arabic)</label>
+              <input class="control" id="section-description-ar" dir="rtl" placeholder="ساخن، بارد، مخلوط أو معلب">
+            </div>
           </div>
         </form>
       </div>
