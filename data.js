@@ -94,6 +94,21 @@
       { id: 47, sectionId: 8, name: "San Sebastian", nameAr: "سان سيباستيان", description: "burnt basque cheesecake", descriptionAr: "تشيز كيك باسكي محروق", image: IMG.dessert, available: true, featured: false, variants: [v("Regular", 110, null, "عادي")] },
       { id: 48, sectionId: 8, name: "Brownie Affogato", nameAr: "براوني أفوغاتو", description: "brownie topped with espresso shot", descriptionAr: "براوني مع طلقة إسبريسو", image: IMG.dessert, available: true, featured: true, variants: [v("Regular", 125, null, "عادي")] }
     ],
+    promo: {
+      active: true,
+      name: "Mango Coconut Smoothie",
+      nameAr: "سموذي مانجو وجوز الهند",
+      description: "A tropical blend of ripe mango, cold-pressed coconut milk and ice. Light, creamy and refreshingly sweet — the perfect pick-me-up on a hot day without any coffee at all.",
+      descriptionAr: "مزيج استوائي من المانجو الناضج وحليب جوز الهند المضغوط والثلج. خفيف وكريمي وحلو منعش — المشروب المثالي في يوم حار بدون قهوة.",
+      price: 100,
+      oldPrice: 125,
+      discount: 20,
+      tagTitle: "Fresh",
+      tagTitleAr: "طازج",
+      tagSub: "mango + coconut + ice",
+      tagSubAr: "مانجو + جوز هند + ثلج",
+      image: "https://images.pexels.com/photos/4294726/pexels-photo-4294726.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800"
+    },
     account: { name: "Athar Admin", email: "admin@athar.com", password: "admin123" }
   };
 
@@ -108,6 +123,7 @@
         const parsed = JSON.parse(saved);
         // Ensure the data has the required structure
         if (parsed && parsed.sections && parsed.items && parsed.account) {
+          if (!parsed.promo) parsed.promo = clone(demo.promo);
           return parsed;
         }
       }
